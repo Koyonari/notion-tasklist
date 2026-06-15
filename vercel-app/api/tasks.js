@@ -11,6 +11,13 @@ function dateInTz(isoString, tz) {
   }).format(new Date(isoString));
 }
 
+// status: 0 = todo, 1 = doing, 2 = done
+function statusCode(name) {
+  if (name === "Done") return 2;
+  if (name === "Doing") return 1;
+  return 0;
+}
+
 export default async function handler(req, res) {
   if (req.method !== "GET") return res.status(405).end();
 
@@ -24,16 +31,17 @@ export default async function handler(req, res) {
 
     const tasks = response.results
       .map((page) => ({
+        id: page.id,
         title: page.properties.Task?.title?.[0]?.plain_text ?? "Untitled",
-        done: page.properties.Done?.checkbox ?? false,
+        status: statusCode(page.properties.Status?.status?.name ?? "To Do"),
         deadline: page.properties.Deadline?.date?.start ?? null,
         editedDate: dateInTz(page.last_edited_time, tz),
       }))
-      // Hide completed tasks once the day they were completed has passed
-      .filter((t) => !t.done || t.editedDate === today)
-      .map(({ title, done, deadline }) => ({ title, done, deadline }))
+      // Hide Done tasks once the day they were completed has passed
+      .filter((t) => t.status < 2 || t.editedDate === today)
+      .map(({ id, title, status, deadline }) => ({ id, title, status, deadline }))
       .sort((a, b) => {
-        if (a.done !== b.done) return a.done ? 1 : -1;
+        if (a.status !== b.status) return a.status - b.status;
         if (!a.deadline && !b.deadline) return 0;
         if (!a.deadline) return 1;
         if (!b.deadline) return -1;
