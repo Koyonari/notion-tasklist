@@ -25,12 +25,10 @@
 #include <Fonts/FreeSans7pt7b.h>
 #include <time.h>
 
-#define DISPLAY_ENABLED false
-
 // ── Configuration ──────────────────────────────────────────────────────────
 #define WIFI_SSID       "Vega Mini"
 #define WIFI_PASSWORD   "doomslayer"
-#define API_URL         "https://your-app.vercel.app/api/tasks"
+#define API_URL         "https://notion-tasklist.vercel.app/api/tasks"
 
 // UTC offset for your timezone in seconds (e.g. UTC+8 = 8*3600 = 28800)
 #define UTC_OFFSET_SEC  28800

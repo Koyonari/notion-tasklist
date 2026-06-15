@@ -24,7 +24,7 @@ export default async function handler(req, res) {
 
     const tasks = response.results
       .map((page) => ({
-        title: page.properties.Name?.title?.[0]?.plain_text ?? "Untitled",
+        title: page.properties.Task?.title?.[0]?.plain_text ?? "Untitled",
         done: page.properties.Done?.checkbox ?? false,
         deadline: page.properties.Deadline?.date?.start ?? null,
         editedDate: dateInTz(page.last_edited_time, tz),

@@ -10,7 +10,7 @@
 
 #define WIFI_SSID      "Vega Mini"
 #define WIFI_PASSWORD  "doomslayer"
-#define API_URL        "https://your-app.vercel.app/api/tasks"
+#define API_URL        "https://notion-tasklist.vercel.app/api/tasks"
 
 void setup() {
   Serial.begin(115200);
